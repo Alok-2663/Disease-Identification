@@ -47,7 +47,6 @@ cloudpickle
 colorama
 colorcet
 comm
-conda
 conda-build
 conda-content-trust
 conda-libmamba-solver
