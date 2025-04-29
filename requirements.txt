@@ -48,7 +48,6 @@ clyent==1.2.1
 colorama
 colorcet
 comm
-conda
 conda-build
 conda-content-trust
 conda-libmamba-solver
