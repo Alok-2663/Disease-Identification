@@ -41,21 +41,6 @@ def predict_model1():
 
     return jsonify({'prediction': class_label, 'confidence': float(confidence)})
 
-@app.route('/predict_model2', methods=['POST'])
-def predict_model2():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file uploaded'})
-
-    file = request.files['file']
-    image = preprocess_image(file)
-
-    model = tf.keras.models.load_model(MODEL2_PATH)
-    predictions = model.predict(image)
-    class_idx = np.argmax(predictions)
-    confidence = np.max(predictions)
-    class_label = MODEL2_LABELS[class_idx] if class_idx < len(MODEL2_LABELS) else "Unknown"
-
-    return jsonify({'prediction': class_label, 'confidence': float(confidence)})
 
 
 if __name__ == '__main__':
