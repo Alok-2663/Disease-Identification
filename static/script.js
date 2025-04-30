@@ -32,15 +32,24 @@ function uploadImage() {
         data: formData,
         processData: false,
         contentType: false,
+        dataType: 'json', // ensures jQuery tries to parse JSON
         success: function(response) {
-            $('#result').html(
-                "<strong>Model Prediction:</strong> " + response.prediction +
-                "<br><strong>Confidence Level:</strong> " + (response.confidence * 100).toFixed(2) + "%"
-            );
+            if (response && response.prediction && response.confidence !== undefined) {
+                $('#result').html(
+                    "<strong>Model Prediction:</strong> " + response.prediction +
+                    "<br><strong>Confidence Level:</strong> " + (response.confidence * 100).toFixed(2) + "%"
+                );
+            } else {
+                $('#result').html("⚠️ <strong>Unexpected response format.</strong>");
+            }
             $('#result-container').fadeIn();
         },
         error: function(xhr, status, error) {
-            $('#result').html("❌ <strong>Error:</strong> " + error);
+            let errorMessage = "❌ <strong>Error:</strong> " + error;
+            if (xhr.responseText) {
+                errorMessage += "<br><em>Details:</em> " + xhr.responseText;
+            }
+            $('#result').html(errorMessage);
             $('#result-container').fadeIn();
         }
     });
@@ -50,9 +59,9 @@ function uploadImage() {
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("fileInput").addEventListener("change", previewImage);
 
-    // Fix: Make sure upload button has id="uploadButton"
-    document.querySelector("button[onclick='uploadImage()']").setAttribute("id", "uploadButton");
-
-    document.getElementById("uploadButton").addEventListener("click", uploadImage);
+    const uploadBtn = document.querySelector("button[onclick='uploadImage()']");
+    if (uploadBtn) {
+        uploadBtn.setAttribute("id", "uploadButton");
+        document.getElementById("uploadButton").addEventListener("click", uploadImage);
+    }
 });
-
