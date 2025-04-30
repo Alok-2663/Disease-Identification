@@ -7,12 +7,10 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 # Paths to the models
-MODEL1_PATH = "DenseNet_121_Aug2_MD.h5"
-MODEL2_PATH = "densenet_MODEL_ORG_80_20.h5"
+MODEL1_PATH = "MobileNetV2_MODEL.h5"
 
 # Class labels for each model
 MODEL1_LABELS = ['Alternaria', 'Downey Mildew', 'Powdrey Mildew', 'White Rust']
-MODEL2_LABELS = ['Alternaria Leaf Spot', 'Cercospora', 'Phyllody', 'Phytopthora']
 
 @app.route('/')
 def home():
@@ -25,7 +23,7 @@ def preprocess_image(file):
     image = np.expand_dims(image, axis=0)
     return image
 
-@app.route('/predict_model1', methods=['POST'])
+@app.route('/predict_model', methods=['POST'])
 def predict_model1():
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'})
