@@ -24,7 +24,7 @@ def preprocess_image(file):
     return image
 
 @app.route('/predict_model', methods=['POST'])
-def predict_model1():
+def predict_model():
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'})
 
