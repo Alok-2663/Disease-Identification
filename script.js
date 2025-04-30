@@ -27,7 +27,7 @@ function uploadImage() {
     formData.append("file", fileInput);
 
     $.ajax({
-        url: '/predict',
+        url: '/predict_model1',
         type: 'POST',
         data: formData,
         processData: false,
