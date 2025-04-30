@@ -25,32 +25,38 @@ def preprocess_image(file):
     image = np.expand_dims(image, axis=0)
     return image
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        if 'file' not in request.files:
-            return jsonify({'error': 'No file uploaded'}), 400
+@app.route('/predict_model1', methods=['POST'])
+def predict_model1():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'})
 
-        file = request.files['file']
-        if file.filename == '':
-            return jsonify({'error': 'Empty file name'}), 400
+    file = request.files['file']
+    image = preprocess_image(file)
 
-        image = preprocess_image(file)
+    model = tf.keras.models.load_model(MODEL1_PATH)
+    predictions = model.predict(image)
+    class_idx = np.argmax(predictions)
+    confidence = np.max(predictions)
+    class_label = MODEL1_LABELS[class_idx] if class_idx < len(MODEL1_LABELS) else "Unknown"
 
-        # Use MODEL1 for prediction (you can switch to MODEL2 if needed)
-        model = tf.keras.models.load_model(MODEL1_PATH)
-        predictions = model.predict(image)
+    return jsonify({'prediction': class_label, 'confidence': float(confidence)})
 
-        class_idx = int(np.argmax(predictions))
-        confidence = float(np.max(predictions))
-        class_label = MODEL1_LABELS[class_idx] if class_idx < len(MODEL1_LABELS) else "Unknown"
+@app.route('/predict_model2', methods=['POST'])
+def predict_model2():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'})
 
-        return jsonify({'prediction': class_label, 'confidence': confidence})
+    file = request.files['file']
+    image = preprocess_image(file)
 
-    except Exception as e:
-        # Print to server logs and return JSON error
-        print(f"Error in /predict: {str(e)}")
-        return jsonify({'error': str(e)}), 500
+    model = tf.keras.models.load_model(MODEL2_PATH)
+    predictions = model.predict(image)
+    class_idx = np.argmax(predictions)
+    confidence = np.max(predictions)
+    class_label = MODEL2_LABELS[class_idx] if class_idx < len(MODEL2_LABELS) else "Unknown"
+
+    return jsonify({'prediction': class_label, 'confidence': float(confidence)})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
