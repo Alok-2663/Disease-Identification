@@ -23,7 +23,7 @@ def preprocess_image(file):
     image = np.expand_dims(image, axis=0)
     return image
 
-@app.route('/predict_model', methods=['POST'])
+@app.route('/predict_model1', methods=['POST'])
 def predict_model():
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'})
