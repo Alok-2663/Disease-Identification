@@ -7,8 +7,8 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 # Paths to the models
-MODEL1_PATH = "MobileNetV2_MODEL.h5"
-MODEL2_PATH = "sesame_model_densenet.h5"
+MODEL1_PATH = "DenseNet_121_Aug2_MD.h5"
+MODEL2_PATH = "densenet_MODEL_ORG_80_20.h5"
 
 # Class labels for each model
 MODEL1_LABELS = ['Alternaria', 'Downey Mildew', 'Powdrey Mildew', 'White Rust']
